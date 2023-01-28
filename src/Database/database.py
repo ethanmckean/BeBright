@@ -34,10 +34,10 @@ pool = sqlalchemy.create_engine(
 with pool.connect() as db_conn:
   # create ratings table in our movies database
   db_conn.execute(
-      "CREATE TABLE IF NOT EXISTS ratings "
-      "( id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, "
-      "genre VARCHAR(255) NOT NULL, rating FLOAT NOT NULL, "
-      "PRIMARY KEY (id));"
+      sqlalchemy.text("CREATE TABLE IF NOT EXISTS ratings ;")
+    #   "( id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, "
+    #   "genre VARCHAR(255) NOT NULL, rating FLOAT NOT NULL, "
+    #   "PRIMARY KEY (id));")
   )
   # insert data into our ratings table
   insert_stmt = sqlalchemy.text(

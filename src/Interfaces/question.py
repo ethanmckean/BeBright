@@ -41,20 +41,6 @@ class Question:
     def __str__(self) -> str:
         return self.get_question() + "\n" + self.get_choices()
 
-
-# def add_to_database(q: Question):
-#     with mydb.cursor() as cursor:
-#         query = "INSERT INTO table(name, data, ans) VALUES(%s, %s, %s)"
-#         params = {"name": q.get_question(), "data": q.get_choices(), "ans": q.get_key()}
-#         cursor.execute(query, params)
-
-# def parse_database():
-#     question: List[Question] = []
-#     with mydb.cursor() as cursor:
-#         query = "SELECT * FROM table(name, data, ans)"
-#         for i in cursor.execute(query).fetch_all():
-#             question.append(Question(i[0], [s[3:] for s in i[1].split("\n")], i[2]))
-
 if __name__ == "__main__":
     with open("Exam.txt", "r") as file:
         lines = file.readlines()

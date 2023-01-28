@@ -8,7 +8,7 @@ INSTANCE_CONNECTION_NAME = f"spartahacks8:us-central1:be-bright-da" # i.e demo-p
 print(f"Your instance connection name is: {INSTANCE_CONNECTION_NAME}")
 DB_USER = "swesik"
 # DB_PASS = "robin"
-DB_NAME = "movies"
+DB_NAME = "bbdb"
 
 # initialize Connector object
 connector = Connector()
@@ -27,11 +27,11 @@ def getconn():
 # create connection pool with 'creator' argument to our connection object function
 pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
-    creator=getconn,
+    creator=getcosn,
 )
 
 # connect to connection pool
-with pool.connect() as db_conn:
+with psool.connect() as db_conn:
   # create ratings table in our movies database
   db_conn.execute(
       sqlalchemy.text("CREATE TABLE IF NOT EXISTS ratings ;")
@@ -55,3 +55,16 @@ with pool.connect() as db_conn:
   # show results
   for row in results:
     print(row)
+
+# def add_to_database(q: Question):
+#     with mydb.cursor() as cursor:
+#         query = "INSERT INTO table(name, data, ans) VALUES(%s, %s, %s)"
+#         params = {"name": q.get_question(), "data": q.get_choices(), "ans": q.get_key()}
+#         cursor.execute(query, params)
+
+# def parse_database():
+#     question: List[Question] = []
+#     with mydb.cursor() as cursor:
+#         query = "SELECT * FROM table(name, data, ans)"
+#         for i in cursor.execute(query).fetch_all():
+#             question.append(Question(i[0], [s[3:] for s in i[1].split("\n")], i[2]))

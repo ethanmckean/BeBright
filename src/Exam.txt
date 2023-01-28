@@ -33,9 +33,9 @@ a
 6
 Si Quaeris Peninsulam Amoenam Circumspice
 If you seek a pleasant world, simply look around
-Duis aute irure dolor
+Duis Aute Irure Dolor
 The world's coldest peninsula
-Excepteur sint occaecat cupidatat non proident
+Excepteur Sint Occaecat Cupidatat Non Proident
 Home of the true, the brave, and the loyal
 What is Michigan's state flower?
 c
@@ -97,5 +97,8 @@ b
 Mount Curwood
 Mount Arvon
 Mount Benison
-
-
+Using only the operations n = 3n + 1 and n = n / 2, is it possible to reach 1 given any number n?
+c
+2
+Yes
+No

@@ -37,7 +37,7 @@ class Question:
     def __str__(self) -> str:
         return self.get_question() + "\n" + self.str_choices()
 
-    def jsonify(self) -> Dict[str, str]:
+    def get_dict(self) -> Dict[str, str]:
         return {"qs": self.qs, "choices": self.choices, "ans": self.ans}
 
 

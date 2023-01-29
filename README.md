@@ -8,10 +8,10 @@ Inspired by the popular app BeReal, BeBright aims to encourage incremental study
 After being invited to a class, users will receive a push notification and/or SMS when their class' question goes live. Then, they have five minutes to solve the question for extra credit. 
 
 ## How we built it
-We used Flask to build our backend and React Native for the frontend. For our landing page, we used Velo by Wix. React Native allows for questions to be answered both from mobile platforms as well as the web, essential for accessibility across communities where access to technologies may be varied. 
+We used Flask to build our backend and React Native for the frontend. For our landing page, we used Velo by Wix. Lastly, we used Twilio for SMS notifications. React Native allows for questions to be answered both from mobile platforms as well as the web, essential for accessibility across communities where access to technologies may be varied. 
 
 ## Challenges we ran into
-While our database can handle user authentication and data storage, we ran into issues integrating a Firebase UI log in with react-native. With more time, however, integrations with Firebase, Twilio, and more are possible. Overall, our teams limited experience in frontend app development became a bottleneck.
+While our database can handle user authentication and data storage, we ran into issues integrating a Firebase UI log in with react-native. With more time, however, integrations with Firebase auth and even AI-powered chat bots such as Chat GPT are possible. Overall, our teams limited experience in frontend app development became a bottleneck.
 
 ## Accomplishments that we're proud of
 Our backend successfully integrates with our cross platform front end. We also have a clean landing page with a custom domain.

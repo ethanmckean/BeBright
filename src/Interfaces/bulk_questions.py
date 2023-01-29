@@ -22,4 +22,3 @@ if __name__ == "__main__":
         for i in range(len(questions)):
             with open("../bin/out" + str(i).zfill(4) + ".json", "w") as f:
                 json.dump(questions[i].get_dict(), f)
-            

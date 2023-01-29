@@ -46,14 +46,16 @@ def add_to_database(q: Question, group: str, time: datetime) -> None:
             ans=q.get_ans(),
             choices=q.get_choices(),
             group=group,
-            post_time=time
+            post_time=time,
         )
 
         db_conn.execute(query)
         db_conn.commit()
 
 
-def get_database_questions(group: str, time: datetime=datetime.now()) -> List[Question]:
+def get_database_questions(
+    group: str, time: datetime = datetime.now()
+) -> List[Question]:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
             "SELECT question, choices, ans, group, post_time FROM questions WHERE "
@@ -67,11 +69,11 @@ def get_database_questions(group: str, time: datetime=datetime.now()) -> List[Qu
             for i in db_conn.execute(query).fetchall()
         ]
 
-def remove_database_questions(group: str, time: datetime=datetime.now()) -> None:
+
+def remove_database_questions(group: str, time: datetime = datetime.now()) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "DELETE FROM FROM questions WHERE "
-            "group = :group AND post_time < :time"
+            "DELETE FROM FROM questions WHERE " "group = :group AND post_time < :time"
         )
 
         query = query.bindparams(group=group, time=time)

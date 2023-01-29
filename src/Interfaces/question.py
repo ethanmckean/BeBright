@@ -54,4 +54,3 @@ def get_json_data(data: str) -> Question:
 
 def get_question(data: str) -> Question:
     return get_json_data(data)[0]
-

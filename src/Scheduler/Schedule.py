@@ -7,15 +7,17 @@ from Database.database import (
 from Interfaces.question import Question
 from twilio.rest import Client
 from typing import List
+import os
+
 
 app = Flask(__name__)
 
 # Download the helper library from https://www.twilio.com/docs/python/install
 
 # Your Account Sid and Auth Token from twilio.com/console
-twilio_account_sid = "ACf035803b5397b0314e38ff0ec61760b2"
-twilio_auth_token = "52a9c08cc9a488a76dd78640b7506a9c"
-twilio_number = "[+][1][8446830525]"
+twilio_account_sid = ""
+twilio_auth_token = ""
+twilio_number = "+18446830525"
 
 client = Client(twilio_account_sid, twilio_auth_token)
 
@@ -30,7 +32,7 @@ def get_scheduled_tasks():
     questions = get_database_questions(group)
 
     if len(questions) == 0:
-        return None
+        return ("", 204)
 
     number = int(data["number"])
 
@@ -38,13 +40,15 @@ def get_scheduled_tasks():
 
     text = client.messages.create(
         body="You have a new BeBright question avaliable",
-        from_=f"[+][1][{number}]",
-        to=f"[+][1][{number}]",
+        from_=f"{twilio_number}",
+        to=f"{number}",
     )
 
     print(text.sid)
 
-    return questions[0][0].get_dict()
+    remove_database_questions(group, question=questions[0][0].get_ans())
+
+    return (questions[0][0].get_dict(), 200)
 
 
 @app.post("/tasks")
@@ -53,8 +57,12 @@ def schedule_task():
         return {"error": "Request must be JSON"}, 415
 
     data = request.get_json()
-    question = Question(data["qs"], data["choices"], data["ans"])
+    question = Question(data["qs"], data["choices"].split("\n"), data["ans"])
     group = data["group"]
     post_time = data["post_time"]
 
+    print(group)
+
     add_to_database(question, group, post_time)
+
+    return ("", 201)

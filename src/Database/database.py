@@ -27,11 +27,11 @@ def getconn():
 # create connection pool with 'creator' argument to our connection object function
 pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
-    creator=getcosn,
+    creator=getconn,
 )
 
 # connect to connection pool
-with psool.connect() as db_conn:
+with pool.connect() as db_conn:
   # create ratings table in our movies database
   db_conn.execute(
       sqlalchemy.text("CREATE TABLE IF NOT EXISTS ratings ;")

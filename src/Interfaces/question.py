@@ -1,3 +1,4 @@
+print(__file__)
 from typing import List
 
 # import mysql.connector
@@ -12,10 +13,10 @@ chars = "abcdefghijklmnopqrstuvwxyz"
 
 
 class Question:
-    def __init__(self, qs: str, choices: List[str], key: str) -> None:
+    def __init__(self, qs: str, choices: List[str], ans: str) -> None:
         self.qs = qs
         self.choices = choices
-        self.key = key
+        self.ans = ans
 
         if len(choices) > 26:
             raise Exception(
@@ -23,37 +24,27 @@ class Question:
             )
 
     def answer(self, sol: str) -> bool:
-        return sol == self.key
+        return sol == self.ans
 
     def iterate_choice(self) -> str:
         for choice in self.choices:
             yield choice
 
-    def get_choices(self) -> str:
+    def str_choices(self) -> str:
         return "\n".join(chars[i] + ") " + text for i, text in enumerate(self.choices))
+
+    def get_choices(self) -> str:
+        return "\n".join(self.choices)
 
     def get_question(self) -> str:
         return self.qs
 
-    def get_key(self) -> str:
-        return self.key
+    def get_ans(self) -> str:
+        return self.ans
 
     def __str__(self) -> str:
-        return self.get_question() + "\n" + self.get_choices()
+        return self.get_question() + "\n" + self.str_choices()
 
-
-# def add_to_database(q: Question):
-#     with mydb.cursor() as cursor:
-#         query = "INSERT INTO table(name, data, ans) VALUES(%s, %s, %s)"
-#         params = {"name": q.get_question(), "data": q.get_choices(), "ans": q.get_key()}
-#         cursor.execute(query, params)
-
-# def parse_database():
-#     question: List[Question] = []
-#     with mydb.cursor() as cursor:
-#         query = "SELECT * FROM table(name, data, ans)"
-#         for i in cursor.execute(query).fetch_all():
-#             question.append(Question(i[0], [s[3:] for s in i[1].split("\n")], i[2]))
 
 if __name__ == "__main__":
     with open("Exam.txt", "r") as file:

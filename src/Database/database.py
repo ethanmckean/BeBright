@@ -1,6 +1,7 @@
 from Interfaces.question import Question
 from typing import List, Any
 from google.cloud.sql.connector import Connector
+from datetime import datetime
 import sqlalchemy
 
 
@@ -33,69 +34,46 @@ pool = sqlalchemy.create_engine(
 )
 
 
-def add_to_database(user: str, q: Question, tag: str = None) -> None:
+def add_to_database(q: Question, group: str, time: datetime) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "INSERT INTO questions(user, tag, question, ans, choices) "
-            "VALUES(:user, :tag, :question, :ans, :choices)",
+            "INSERT INTO questions(question, ans, choices, group, post_time) "
+            "VALUES(:question, :ans, :choices, :group, :post_time)",
         )
 
         query = query.bindparams(
-            user=user,
-            tag=tag,
             question=q.get_question(),
             ans=q.get_ans(),
             choices=q.get_choices(),
+            group=group,
+            post_time=time
         )
 
         db_conn.execute(query)
         db_conn.commit()
 
 
-def get_database_questions(user: str = None, tag: str = None) -> List[Question]:
+def get_database_questions(group: str, time: datetime=datetime.now()) -> List[Question]:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "SELECT question, choices, ans FROM questions WHERE "
-            "(user=:user OR :user IS NULL) AND (tag=:tag OR :tag IS NULL)"
+            "SELECT question, choices, ans, group, post_time FROM questions WHERE "
+            "group = :group AND post_time < :time"
         )
 
-        query = query.bindparams(user=user, tag=tag)
+        query = query.bindparams(group=group, time=time)
 
         return [
-            Question(i[0], i[1].split("\n"), i[2])
+            (Question(i[0], i[1].split("\n"), i[2]), i[3], [4])
             for i in db_conn.execute(query).fetchall()
         ]
 
-
-if __name__ == "__main__":
+def remove_database_questions(group: str, time: datetime=datetime.now()) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "DELETE FROM questions WHERE 1",
+            "DELETE FROM FROM questions WHERE "
+            "group = :group AND post_time < :time"
         )
 
+        query = query.bindparams(group=group, time=time)
+
         db_conn.execute(query)
-        db_conn.commit()
-
-    with open("src/Exam.txt", "r") as file:
-        lines = file.readlines()
-        question: List[Question] = []
-
-        line = 0
-        while line < len(lines):
-            question.append(
-                Question(
-                    lines[line].strip(),
-                    [lines[line + 3 + j].strip() for j in range(int(lines[line + 2]))],
-                    lines[line + 1].strip(),
-                )
-            )
-
-            line += 3 + int(lines[line + 2])
-
-        for q in question:
-            add_to_database("me", q)
-
-for i in get_database_questions():
-    print(str(i))
-    print(i.answer(input()))
-    print()

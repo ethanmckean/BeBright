@@ -20,4 +20,4 @@ Our backend successfully integrates with our cross platform front end. We also h
 Often times attempting to integrate various third party services introduced friction when inexplicable errors and other issues appeared. While we were quick to coming up with our idea and developing/unit testing the backend we underestimated the overhead creating a cross-platform frontend would take for first time react developers.
 
 ## What's next for BeBright
-In future weekends we may choose to flush out the user experience. Additional question formats, a teacher dashboard UI, platform-specific push notifications (*cough* Apple requiring a Developer account), and more our on our TODO list. 
+In future weekends we may choose to flush out the user experience. Additional question formats, a teacher dashboard UI, platform-specific push notifications (*cough* Apple requiring a Developer account), and more are on our TODO list. 

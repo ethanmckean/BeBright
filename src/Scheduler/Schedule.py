@@ -18,6 +18,9 @@ def get_scheduled_tasks():
     group = request.get_json()["group"]
     questions = get_database_questions(group)
 
+    if len(questions) == 0:
+        return None
+    
     remove_database_questions(group, question=questions[0][0].get_ans())
 
     return questions[0][0].get_dict()

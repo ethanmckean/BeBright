@@ -34,18 +34,18 @@ pool = sqlalchemy.create_engine(
 )
 
 
-def add_to_database(q: Question, group: str, time: datetime) -> None:
+def add_to_database(q: Question, cluster: str, time: datetime) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "INSERT INTO questions(question, ans, choices, group, post_time) "
-            "VALUES(:question, :ans, :choices, :group, :post_time)",
+            "INSERT INTO questions(question, ans, choices, cluster, post_time) "
+            "VALUES(:question, :ans, :choices, :cluster, :post_time)",
         )
 
         query = query.bindparams(
             question=q.get_question(),
             ans=q.get_ans(),
             choices=q.get_choices(),
-            group=group,
+            cluster=cluster,
             post_time=time,
         )
 
@@ -54,15 +54,15 @@ def add_to_database(q: Question, group: str, time: datetime) -> None:
 
 
 def get_database_questions(
-    group: str, time: datetime = datetime.now()
+    cluster: str, time: datetime = datetime.now()
 ) -> List[Tuple[Question, str, datetime]]:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "SELECT question, choices, ans, group, post_time FROM questions WHERE "
-            "group = :group AND post_time < :time"
+            "SELECT question, choices, ans, cluster, post_time FROM questions WHERE "
+            "cluster = :cluster AND post_time < :time"
         )
 
-        query = query.bindparams(group=group, time=time)
+        query = query.bindparams(cluster=cluster, time=time)
 
         return [
             (Question(i[0], i[1].split("\n"), i[2]), i[3], [4])
@@ -71,14 +71,15 @@ def get_database_questions(
 
 
 def remove_database_questions(
-    group: str, question: str = None, time: datetime = datetime.now()
+    cluster: str, question: str = None, time: datetime = datetime.now()
 ) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "DELETE FROM FROM questions WHERE group = :group AND post_time < :time "
+            "DELETE FROM questions WHERE cluster = :cluster AND post_time < :time "
             "AND (question = :question OR :question IS NULL)"
         )
 
-        query = query.bindparams(group=group, time=time)
+        query = query.bindparams(cluster=cluster, question=question, time=time)
 
         db_conn.execute(query)
+        db_conn.commit()

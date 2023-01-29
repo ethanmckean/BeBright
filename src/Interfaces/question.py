@@ -1,3 +1,4 @@
+print(__file__)
 from typing import List
 
 # import mysql.connector
@@ -12,10 +13,10 @@ chars = "abcdefghijklmnopqrstuvwxyz"
 
 
 class Question:
-    def __init__(self, qs: str, choices: List[str], key: str) -> None:
+    def __init__(self, qs: str, choices: List[str], ans: str) -> None:
         self.qs = qs
         self.choices = choices
-        self.key = key
+        self.ans = ans
 
         if len(choices) > 26:
             raise Exception(
@@ -23,23 +24,27 @@ class Question:
             )
 
     def answer(self, sol: str) -> bool:
-        return sol == self.key
+        return sol == self.ans
 
     def iterate_choice(self) -> str:
         for choice in self.choices:
             yield choice
 
-    def get_choices(self) -> str:
+    def str_choices(self) -> str:
         return "\n".join(chars[i] + ") " + text for i, text in enumerate(self.choices))
+
+    def get_choices(self) -> str:
+        return "\n".join(self.choices)
 
     def get_question(self) -> str:
         return self.qs
 
-    def get_key(self) -> str:
-        return self.key
+    def get_ans(self) -> str:
+        return self.ans
 
     def __str__(self) -> str:
-        return self.get_question() + "\n" + self.get_choices()
+        return self.get_question() + "\n" + self.str_choices()
+
 
 if __name__ == "__main__":
     with open("Exam.txt", "r") as file:

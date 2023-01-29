@@ -41,7 +41,17 @@ class Question:
         return {"qs": self.qs, "choices": self.choices, "ans": self.ans}
 
 
-def get_question(data: str) -> Question:
-    data = json.dump(json)
+def get_json_data(data: str) -> Question:
+    with open(data) as json_file:
+        json_data = json.load(json_file)
 
-    return Question(data["qs"], data["choices"], data["ans"])
+        return (
+            Question(json_data["qs"], json_data["choices"], json_data["ans"]),
+            json_data["group"],
+            json_data["post_date"],
+        )
+
+
+def get_question(data: str) -> Question:
+    return get_json_data(data)[0]
+

@@ -20,6 +20,7 @@ def get_scheduled_tasks():
 
     remove_database_questions(group, question=questions[0][0].get_ans())
 
+    return questions[0][0].get_dict()
 
 @app.post("/tasks")
 def schedule_task():

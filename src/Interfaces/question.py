@@ -1,13 +1,5 @@
-print(__file__)
-from typing import List
-
-# import mysql.connector
-
-# mydb = mysql.connector.connect(
-#   host="localhost",
-#   user="yourusername",
-#   password="yourpassword"
-# )
+from typing import List, Dict
+import json
 
 chars = "abcdefghijklmnopqrstuvwxyz"
 
@@ -45,24 +37,11 @@ class Question:
     def __str__(self) -> str:
         return self.get_question() + "\n" + self.str_choices()
 
+    def jsonify(self) -> Dict[str, str]:
+        return {"qs": self.qs, "choices": self.choices, "ans": self.ans}
 
-if __name__ == "__main__":
-    with open("Exam.txt", "r") as file:
-        lines = file.readlines()
-        question: List[Question] = []
 
-        line = 0
-        while line < len(lines):
-            question.append(
-                Question(
-                    lines[line].strip(),
-                    [lines[line + 3 + j].strip() for j in range(int(lines[line + 2]))],
-                    lines[line + 1].strip(),
-                )
-            )
+def get_question(data: str) -> Question:
+    data = json.dump(json)
 
-            line += 3 + int(lines[line + 2])
-
-        for q in question:
-            print(q)
-            print(q.answer(input()))
+    return Question(data["qs"], data["choices"], data["ans"])

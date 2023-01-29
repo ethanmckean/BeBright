@@ -32,19 +32,6 @@ pool = sqlalchemy.create_engine(
     creator=get_connection,
 )
 
-# with pool.connect() as db_conn:
-#     drop_query = sqlalchemy.text("DROP TABLE questions")
-#     query = sqlalchemy.text(
-#         "CREATE TABLE questions("
-#         "user VARCHAR(50) NOT NULL, tag VARCHAR(50), question VARCHAR(1000) NOT NULL, "
-#         "ans VARCHAR(10) NOT NULL, choices VARCHAR(10000) NOT NULL)"
-#     )
-
-#     db_conn.execute(drop_query)
-#     db_conn.execute(query)
-#     db_conn.commit()
-# exit(0)
-
 
 def add_to_database(user: str, q: Question, tag: str = None) -> None:
     with pool.connect() as db_conn:

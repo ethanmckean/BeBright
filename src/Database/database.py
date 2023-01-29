@@ -1,5 +1,5 @@
 from Interfaces.question import Question
-from typing import List, Any
+from typing import List, Tuple, Any
 from google.cloud.sql.connector import Connector
 from datetime import datetime
 import sqlalchemy
@@ -55,7 +55,7 @@ def add_to_database(q: Question, group: str, time: datetime) -> None:
 
 def get_database_questions(
     group: str, time: datetime = datetime.now()
-) -> List[Question]:
+) -> List[Tuple[Question, str, datetime]]:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
             "SELECT question, choices, ans, group, post_time FROM questions WHERE "
@@ -70,10 +70,13 @@ def get_database_questions(
         ]
 
 
-def remove_database_questions(group: str, time: datetime = datetime.now()) -> None:
+def remove_database_questions(
+    group: str, question: str = None, time: datetime = datetime.now()
+) -> None:
     with pool.connect() as db_conn:
         query = sqlalchemy.text(
-            "DELETE FROM FROM questions WHERE " "group = :group AND post_time < :time"
+            "DELETE FROM FROM questions WHERE group = :group AND post_time < :time "
+            "AND (question = :question OR :question IS NULL)"
         )
 
         query = query.bindparams(group=group, time=time)
